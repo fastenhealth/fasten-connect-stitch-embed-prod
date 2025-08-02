@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+      height: calc(100dvh - 60px); /* Adjust height to leave space for the consent bar */
+    }
+    .consent-bar {
+      height: 60px; /* Fixed height for the consent bar */
+      background-color: #f9f9f9;
+      border-top: 1px solid #ccc;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .consent-bar button {
+      background-color: #5B47FB;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .consent-bar button:hover {
+      background-color: #4936E8;
+    }
+    .consent-bar p {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .full-viewport-height {
+      height: 100vh;
+    }
+
+    @supports (height: 100dvh) {
+      .full-viewport-height {
+        height: 100dvh;
+      }
+    }
+
+  </style>
+</head>
+<body class="full-viewport-height">
+<iframe src="https://policy.fastenhealth.com/connect/privacy_policy.html"></iframe>
+<div class="consent-bar">
+  <p><button onclick="userInteractionCompleted()">I Agree</button></p>
+
+</div>
+
+<script>
+  let userInteraction = false;
+  window.addEventListener('beforeunload', function (event) {
+    // Your code to execute before the page unloads
+    console.log("Page is about to unload!");
+    if (window.opener && !userInteraction) {
+      window.opener.postMessage('{"success":false}', "*");
+    }
+  });
+
+
+  function userInteractionCompleted() {
+    // Set the cookie
+    document.cookie = "embedFirstPartyCookie=true; SameSite=None; Secure; path=/";
+    userInteraction = true
+    // Notify the opener window
+    if (window.opener) {
+      window.opener.postMessage('{"success":true}', "*");
+    }
+
+    // Close the popup window
+    window.close();
+  }
+</script>
+</body>
+</html>
