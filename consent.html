@@ -18,7 +18,7 @@
       border: none;
       height: calc(100dvh - 60px); /* Adjust height to leave space for the consent bar */
     }
-    .consent-bar {
+    .user-interacted-bar {
       height: 60px; /* Fixed height for the consent bar */
       background-color: #f9f9f9;
       border-top: 1px solid #ccc;
@@ -28,7 +28,7 @@
       align-items: center;
       box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
     }
-    .consent-bar button {
+    .user-interacted-bar button {
       background-color: #5B47FB;
       color: white;
       border: none;
@@ -36,10 +36,10 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    .consent-bar button:hover {
+    .user-interacted-bar button:hover {
       background-color: #4936E8;
     }
-    .consent-bar p {
+    .user-interacted-bar p {
       margin: 0;
       font-size: 14px;
       color: #555;
@@ -59,7 +59,7 @@
 </head>
 <body class="full-viewport-height">
 <iframe src="https://policy.fastenhealth.com/connect/privacy_policy.html"></iframe>
-<div class="consent-bar">
+<div class="user-interacted-bar">
   <p><button onclick="userInteractionCompleted()">I Agree</button></p>
 
 </div>
