@@ -65,60 +65,24 @@
 </div>
 
 <script>
-  const firstPartyCookieName = "embedFirstPartyCookie";
-  const sharedCookieDomains = [
-    "connect.fastenlabs.com",
-    "connect.fastenhealth.com"
-  ];
   let userInteraction = false;
-
-  function openerOrigin() {
-    return window.location.origin;
-  }
-
-  function notifyOpener(success) {
-    if (window.opener) {
-      window.opener.postMessage(JSON.stringify({success}), openerOrigin());
-    }
-  }
-
-  function sharedCookieDomain(hostname) {
-    return sharedCookieDomains.find((domain) => hostname === `embed.${domain}`);
-  }
-
-  function setFirstPartyCookie() {
-    const cookieAttributes = [
-      `${firstPartyCookieName}=true`,
-      "SameSite=None",
-      "Secure",
-      "Path=/"
-    ];
-    const cookieDomain = sharedCookieDomain(window.location.hostname);
-
-    if (cookieDomain) {
-      cookieAttributes.push(`Domain=${cookieDomain}`);
-    }
-
-    document.cookie = cookieAttributes.join("; ");
-  }
-
   window.addEventListener('beforeunload', function (event) {
     // Your code to execute before the page unloads
     console.log("Page is about to unload!");
     if (window.opener && !userInteraction) {
-      notifyOpener(false);
+      window.opener.postMessage('{"success":false}', "*");
     }
   });
 
 
   function userInteractionCompleted() {
-    // Seed the parent Connect domain on deployed hosts so the API sibling can
-    // participate in Safari's first-party cookie relationship. Localhost stays
-    // host-only because it has no shared parent domain.
-    setFirstPartyCookie();
+    // Set the cookie
+    document.cookie = "embedFirstPartyCookie=true; SameSite=None; Secure; path=/";
     userInteraction = true
     // Notify the opener window
-    notifyOpener(true);
+    if (window.opener) {
+      window.opener.postMessage('{"success":true}', "*");
+    }
 
     // Close the popup window
     window.close();
